@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<!-- Sem esta linha o celular "finge" ser um desktop e as media queries não funcionam -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile First e Animações</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animacoes.css">
+<script src="js/script.js" defer></script>
+</head>
+<body>
+
+<header class="topo">
+  <h1>Mobile First e Animações</h1>
+  <p>Aula 14.1 — Desenvolvimento Web · mexa nos controles e veja cada conceito funcionando</p>
+  <!-- O texto deste selo é trocado só pelo CSS, de acordo com a largura da tela -->
+  <div class="selo-tela">
+    <span class="selo-tela__tipo"></span>
+    <span id="largura-tela"></span>
+  </div>
+</header>
+
+<nav class="menu">
+  <a href="#mf-oque">Mobile First</a>
+  <a href="#mf-comparacao">Desktop × Mobile First</a>
+  <a href="#mf-pratica">Simulador</a>
+  <a href="#an-oque">Animações</a>
+  <a href="#an-gpu">GPU</a>
+  <a href="#an-transition">transition</a>
+  <a href="#an-transform">transform</a>
+  <a href="#an-timing">timing-function</a>
+  <a href="#an-keyframes">@keyframes</a>
+  <a href="#an-animation">animation</a>
+</nav>
+
+<main class="conteudo">
+
+<!-- ====================================================== -->
+<h2 class="parte">Parte 1 — Mobile First</h2>
+
+<section id="mf-oque" class="cartao">
+  <h3>O que é Mobile First</h3>
+  <ul class="lista">
+    <li>É uma abordagem em que você projeta <strong>primeiro para telas pequenas</strong> (celulares) e depois vai <strong>expandindo para telas maiores</strong> (tablet, desktop).</li>
+    <li>Você <strong>começa com o essencial</strong> (mobile)…</li>
+    <li>…e <strong>adiciona melhorias progressivamente</strong> com <em>media queries</em>.</li>
+  </ul>
+
+  <p><strong>Esta própria página é Mobile First!</strong> Diminua e aumente a janela do navegador (ou abra no celular) e observe:</p>
+  <ul class="lista">
+    <li>o selo no topo, que mostra qual layout está ativo;</li>
+    <li>o menu acima: no celular ele rola para o lado, no desktop as opções quebram em linhas;</li>
+    <li>os cartões abaixo: 1 coluna no celular, 2 no tablet e 3 no desktop.</li>
+  </ul>
+
+  <div class="grade-exemplo">
+    <div class="mini-cartao">Cartão 1</div>
+    <div class="mini-cartao">Cartão 2</div>
+    <div class="mini-cartao">Cartão 3</div>
+  </div>
+
+  <pre class="codigo"><code>/* 1º) estilo base = CELULAR (sem media query) */
+.grade-exemplo { display: grid; grid-template-columns: 1fr; }
+
+/* 2º) melhoria para TABLET */
+@media (min-width: 768px) {
+  .grade-exemplo { grid-template-columns: 1fr 1fr; }
+}
+
+/* 3º) melhoria para DESKTOP */
+@media (min-width: 1024px) {
+  .grade-exemplo { grid-template-columns: 1fr 1fr 1fr; }
+}</code></pre>
+  <p class="nota">Abra o arquivo <code>css/style.css</code> e procure por <code>@media</code>: todas as regras usam <code>min-width</code>, ou seja, só acrescentam coisas quando a tela fica <strong>maior</strong>.</p>
+</section>
+
+<section id="mf-comparacao" class="cartao">
+  <h3>Desktop First × Mobile First</h3>
+  <div class="duas-colunas">
+    <div>
+      <h4>Desktop First</h4>
+      <pre class="codigo"><code>/* desktop first */
+.container {
+  width: 1200px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+}</code></pre>
+      <ul class="lista">
+        <li>Começa pelo layout grande.</li>
+        <li>Usa <code>max-width</code>: "quando a tela for <strong>até</strong> 768px, desfaça e conserte".</li>
+        <li>O celular baixa o CSS do desktop e depois precisa sobrescrevê-lo.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Mobile First</h4>
+      <pre class="codigo"><code>/* mobile first */
+.container {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 1200px;
+  }
+}</code></pre>
+      <ul class="lista">
+        <li>Começa pelo essencial (celular).</li>
+        <li>Usa <code>min-width</code>: "quando a tela for <strong>a partir de</strong> 768px, acrescente".</li>
+        <li>CSS mais simples para o celular, que normalmente tem a internet e o processador mais fracos.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="mf-pratica" class="cartao">
+  <h3>Simulador de telas</h3>
+  <p>Abaixo há uma página de exemplo (<code>exemplo-layout.html</code>) escrita em Mobile First. Escolha o tamanho da tela e veja o layout se adaptar. Dá também para arrastar o canto inferior direito da moldura.</p>
+  <div class="controles" id="botoes-simulador">
+    <button data-largura="360" class="ativo">📱 Celular (360px)</button>
+    <button data-largura="768">📲 Tablet (768px)</button>
+    <button data-largura="1100">🖥️ Desktop (1100px)</button>
+  </div>
+  <p class="nota">Largura atual da moldura: <strong id="largura-moldura">360px</strong></p>
+  <div class="moldura-rolagem">
+    <div class="moldura" id="moldura">
+      <iframe src="exemplo-layout.html" title="Página de exemplo em Mobile First"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================== -->
+<h2 class="parte">Parte 2 — Animações</h2>
+
+<section id="an-oque" class="cartao">
+  <h3>O que são e para que servem</h3>
+  <p>Animações em CSS permitem <strong>alterar propriedades de um elemento ao longo do tempo</strong>, criando movimento, transições suaves e interações visuais, <strong>sem precisar de JavaScript</strong>.</p>
+  <p>Elas servem para:</p>
+  <div class="usos">
+    <div class="uso">
+      <strong>Melhorar a UX (feedback visual)</strong>
+      <button class="botao-feedback">Clique em mim</button>
+    </div>
+    <div class="uso">
+      <strong>Guiar a atenção do usuário</strong>
+      <span class="notificacao">3 novas mensagens</span>
+    </div>
+    <div class="uso">
+      <strong>Tornar a interface mais moderna</strong>
+      <div class="cartao-flutuante">Passe o mouse</div>
+    </div>
+    <div class="uso">
+      <strong>Microinterações (hover, loading…)</strong>
+      <div class="carregando" aria-label="Carregando"></div>
+    </div>
+  </div>
+
+  <h4>Um pouco de história</h4>
+  <ul class="lista">
+    <li><strong>Anos 90:</strong> a internet era lenta, os computadores tinham pouco processamento e os navegadores eram inconsistentes (Netscape × Internet Explorer). Animações exigiriam demais da CPU e travariam o navegador.</li>
+    <li><strong>Antes do CSS3:</strong> animava-se com JavaScript (jQuery, <code>setInterval</code>…) ou com o Adobe Flash, hoje obsoleto. Isso travava a página, era difícil de manter e tinha baixa performance e pouca fluidez.</li>
+    <li><strong>CSS3 (por volta de 2010):</strong> trouxe animação nativa com <code>transition</code>, <code>transform</code>, <code>@keyframes</code> e <code>animation</code>, interpolando automaticamente os estados intermediários e usando a aceleração da GPU.</li>
+  </ul>
+</section>
+
+<section id="an-gpu" class="cartao">
+  <h3>Aceleração por GPU</h3>
+  <ul class="lista">
+    <li>O navegador pode entregar certas animações para a <strong>placa de vídeo (GPU)</strong> em vez de calcular tudo na CPU, o que as deixa mais rápidas e suaves.</li>
+    <li><code>transform</code> e <code>opacity</code> <strong>não exigem recalcular o layout</strong> nem redesenhar a página. São aplicadas direto na etapa final da renderização, chamada <strong>composição</strong>.</li>
+    <li>Já <code>top</code>, <code>left</code>, <code>width</code> ou <code>margin</code> forçam a CPU a recalcular a estrutura da página a cada quadro.</li>
+  </ul>
+  <p><strong>Experimento:</strong> as duas bolinhas fazem o mesmo movimento. Clique em "Ocupar a CPU": o JavaScript vai prender a CPU por 3 segundos.</p>
+  <div class="pista-gpu">
+    <span class="rotulo-pista">left (CPU)</span>
+    <div class="bolinha bolinha--left"></div>
+  </div>
+  <div class="pista-gpu">
+    <span class="rotulo-pista">transform (GPU)</span>
+    <div class="bolinha bolinha--transform"></div>
+  </div>
+  <div class="controles">
+    <button id="ocupar-cpu">Ocupar a CPU por 3 segundos</button>
+    <span id="status-cpu" class="nota"></span>
+  </div>
+  <p class="nota">Resultado esperado: a bolinha animada com <code>left</code> congela, enquanto a de <code>transform</code> continua andando. Isso acontece no Chrome e no Edge. Em outros navegadores, ou se o computador economizar energia, o resultado pode variar.</p>
+</section>
+
+<section id="an-transition" class="cartao">
+  <h3><code>transition</code></h3>
+  <p>Anima <strong>automaticamente</strong> a mudança de uma propriedade entre <strong>dois estados</strong> (ex.: normal → hover), sem você definir etapas intermediárias. Use para mudanças simples: cor, posição, estados…</p>
+  <div class="duas-colunas">
+    <div>
+      <p><strong>Com</strong> transition, passe o mouse:</p>
+      <button class="botao-transicao">Botão com transition</button>
+    </div>
+    <div>
+      <p><strong>Sem</strong> transition, passe o mouse:</p>
+      <button class="botao-transicao botao-transicao--sem">Botão sem transition</button>
+    </div>
+  </div>
+  <pre class="codigo"><code>button {
+  background: blue;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: red;
+}</code></pre>
+  <p class="nota">Formato: <code>transition: propriedade duração timing-function;</code>. Use <code>all</code> para animar todas as propriedades que mudarem: <code>transition: all 0.5s;</code></p>
+</section>
+
+<section id="an-transform" class="cartao">
+  <h3><code>transform</code></h3>
+  <p>Aplica transformações visuais (<strong>mover, girar, escalar, inclinar</strong>) <strong>sem alterar o layout ao redor</strong>. É a forma mais performática de animar movimento, melhor do que usar <code>top</code> ou <code>left</code>.</p>
+
+  <h4>Exemplos da aula (clique para aplicar)</h4>
+  <div class="grupos-preset">
+    <div>
+      <strong>translate: mover</strong>
+      <div class="controles">
+        <button data-transform="translateX(100px)">translateX(100px)</button>
+        <button data-transform="translateY(100px)">translateY(100px)</button>
+        <button data-transform="translate(100px, 100px)">translate(100px, 100px)</button>
+      </div>
+    </div>
+    <div>
+      <strong>scale: tamanho</strong>
+      <div class="controles">
+        <button data-transform="scale(1.2)">scale(1.2)</button>
+        <button data-transform="scale(0.8)">scale(0.8)</button>
+        <button data-transform="scaleX(1.5)">scaleX(1.5)</button>
+        <button data-transform="scaleY(0.5)">scaleY(0.5)</button>
+      </div>
+    </div>
+    <div>
+      <strong>rotate: girar no plano da tela (2D)</strong>
+      <div class="controles">
+        <button data-transform="rotate(45deg)">rotate(45deg)</button>
+        <button data-transform="rotate(180deg)">rotate(180deg)</button>
+        <button data-transform="rotate(-45deg)">rotate(-45deg)</button>
+      </div>
+    </div>
+    <div>
+      <strong>rotate 3D: informando o eixo</strong>
+      <div class="controles">
+        <button data-transform="rotateX(45deg)">rotateX(45deg): inclina frente/trás</button>
+        <button data-transform="rotateY(45deg)">rotateY(45deg): porta abrindo</button>
+        <button data-transform="rotateZ(45deg)">rotateZ(45deg): igual ao rotate()</button>
+      </div>
+    </div>
+    <div>
+      <strong>Combinações</strong>
+      <div class="controles">
+        <button data-transform="translateX(50px) scale(1.1) rotate(10deg)">translateX(50px) scale(1.1) rotate(10deg)</button>
+        <button data-transform="none" class="botao-neutro">Voltar ao normal (none)</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="palco">
+    <div class="caixa-fantasma">posição original</div>
+    <div class="caixa" id="caixa-transform">.box</div>
+    <span class="vizinho">vizinho</span>
+  </div>
+  <p class="nota">A caixa tracejada mostra onde a <code>.box</code> estava. O "vizinho" não se mexe, porque o transform não altera o layout ao redor.</p>
+  <pre class="codigo"><code id="codigo-transform">.box {
+  transform: none;
+}</code></pre>
+
+  <h4>Monte o seu transform</h4>
+  <div class="controles-deslizantes">
+    <label>translateX <input type="range" data-fn="translateX" data-un="px" min="-150" max="150" value="0"><output>0px</output></label>
+    <label>translateY <input type="range" data-fn="translateY" data-un="px" min="-80" max="80" value="0"><output>0px</output></label>
+    <label>scale <input type="range" data-fn="scale" data-un="" min="0.3" max="2" step="0.1" value="1"><output>1</output></label>
+    <label>rotate <input type="range" data-fn="rotate" data-un="deg" min="-180" max="180" value="0"><output>0deg</output></label>
+    <label>rotateX <input type="range" data-fn="rotateX" data-un="deg" min="-180" max="180" value="0"><output>0deg</output></label>
+    <label>rotateY <input type="range" data-fn="rotateY" data-un="deg" min="-180" max="180" value="0"><output>0deg</output></label>
+  </div>
+  <p class="nota">O palco tem <code>perspective: 600px;</code>. Sem isso, as rotações 3D (rotateX e rotateY) pareceriam apenas o elemento achatando.</p>
+
+  <h4>A ordem importa</h4>
+  <p>Várias transformações são aplicadas <strong>da direita para a esquerda</strong>, e cada uma muda o "sistema de eixos" da seguinte. Por isso as duas caixas abaixo terminam em lugares diferentes:</p>
+  <div class="duas-colunas">
+    <div>
+      <div class="palco palco--baixo"><div class="caixa caixa--ordem-a">A</div></div>
+      <pre class="codigo"><code>transform: translateX(100px) rotate(45deg);
+/* gira no lugar e depois anda 100px para a direita */</code></pre>
+    </div>
+    <div>
+      <div class="palco palco--baixo"><div class="caixa caixa--ordem-b">B</div></div>
+      <pre class="codigo"><code>transform: rotate(45deg) translateX(100px);
+/* anda 100px na direção do eixo já girado (diagonal) */</code></pre>
+    </div>
+  </div>
+</section>
+
+<section id="an-timing" class="cartao">
+  <h3><code>transition-timing-function</code></h3>
+  <p>Define <strong>como a velocidade se distribui</strong> ao longo da animação. Ela <strong>não muda o tempo total</strong>: todas as bolinhas abaixo levam exatamente 2 segundos.</p>
+  <div class="corrida">
+    <div class="raia"><span>linear: velocidade constante</span><div class="corredor" style="transition-timing-function: linear"></div></div>
+    <div class="raia"><span>ease: suave (padrão)</span><div class="corredor" style="transition-timing-function: ease"></div></div>
+    <div class="raia"><span>ease-in: começa lento</span><div class="corredor" style="transition-timing-function: ease-in"></div></div>
+    <div class="raia"><span>ease-out: termina lento</span><div class="corredor" style="transition-timing-function: ease-out"></div></div>
+    <div class="raia"><span>ease-in-out: lento no início e no fim</span><div class="corredor" style="transition-timing-function: ease-in-out"></div></div>
+  </div>
+  <div class="controles">
+    <button id="iniciar-corrida">▶ Iniciar corrida</button>
+  </div>
+  <pre class="codigo"><code>.box {
+  transition: all 0.5s;              /* usa o padrão: ease */
+}
+
+.box {
+  transition: all 0.5s ease-in-out;  /* escolhendo a timing-function */
+}</code></pre>
+</section>
+
+<section id="an-keyframes" class="cartao">
+  <h3><code>@keyframes</code></h3>
+  <p>Define os <strong>estados intermediários</strong> de uma animação, como uma <strong>linha do tempo</strong>. Use para animações complexas ou com várias etapas. O <code>transition</code> só sabe ir de A para B, enquanto o <code>@keyframes</code> pode passar por A → B → C → …</p>
+  <div class="duas-colunas">
+    <div class="vitrine">
+      <div class="caixa caixa--pulse">pulse</div>
+    </div>
+    <pre class="codigo"><code>/* adição do keyframe */
+.box {
+  animation: pulse 1s ease infinite;
+}
+
+/* estrutura do keyframe */
+@keyframes pulse {
+  0%   { transform: scale(1);   }
+  50%  { transform: scale(1.2); }
+  100% { transform: scale(1);   }
+}</code></pre>
+  </div>
+  <p>Um exemplo com <strong>várias etapas</strong> (cor, posição e giro):</p>
+  <div class="vitrine vitrine--larga">
+    <div class="caixa caixa--etapas">etapas</div>
+  </div>
+  <pre class="codigo"><code>@keyframes etapas {
+  0%   { transform: translateX(0)     rotate(0);      background: #3b3f8f; }
+  25%  { transform: translateX(100px) rotate(90deg);  background: #c0392b; }
+  50%  { transform: translateX(200px) rotate(180deg); background: #16a085; }
+  75%  { transform: translateX(100px) rotate(270deg); background: #d35400; }
+  100% { transform: translateX(0)     rotate(360deg); background: #3b3f8f; }
+}</code></pre>
+</section>
+
+<section id="an-animation" class="cartao">
+  <h3><code>animation</code></h3>
+  <p>Aplica uma animação criada com <code>@keyframes</code> a um elemento e controla o comportamento dela: <strong>duração, repetição, direção e atraso</strong>.</p>
+
+  <div class="controles-animacao">
+    <label>duration
+      <select id="an-duration">
+        <option>0.5s</option><option selected>1s</option><option>2s</option><option>4s</option>
+      </select>
+    </label>
+    <label>timing-function
+      <select id="an-timing-fn">
+        <option>linear</option><option selected>ease</option><option>ease-in</option><option>ease-out</option><option>ease-in-out</option>
+      </select>
+    </label>
+    <label>delay
+      <select id="an-delay">
+        <option selected>0s</option><option>1s</option><option>2s</option>
+      </select>
+    </label>
+    <label>iteration-count
+      <select id="an-iteration">
+        <option>1</option><option>3</option><option selected>infinite</option>
+      </select>
+    </label>
+    <label>direction
+      <select id="an-direction">
+        <option selected>normal</option><option>reverse</option><option>alternate</option><option>alternate-reverse</option>
+      </select>
+    </label>
+    <label>keyframes
+      <select id="an-name">
+        <option selected>pulse</option><option>vai-e-volta</option><option>girar</option>
+      </select>
+    </label>
+  </div>
+  <div class="controles">
+    <button id="an-reiniciar">↻ Reiniciar animação</button>
+    <button id="an-pausar">⏸ Pausar (animation-play-state)</button>
+  </div>
+
+  <div class="vitrine vitrine--larga">
+    <div class="caixa" id="caixa-animation">.box</div>
+  </div>
+
+  <div class="duas-colunas">
+    <div>
+      <strong>Forma completa</strong>
+      <pre class="codigo"><code id="codigo-animation-longo"></code></pre>
+    </div>
+    <div>
+      <strong>Forma abreviada (shorthand)</strong>
+      <pre class="codigo"><code id="codigo-animation-curto"></code></pre>
+    </div>
+  </div>
+  <ul class="lista nota">
+    <li><code>direction: reverse</code> toca a linha do tempo de trás para frente (100% → 0%).</li>
+    <li><code>alternate</code> vai e volta (0% → 100%, depois 100% → 0%). Só faz diferença se houver mais de uma repetição.</li>
+    <li><code>delay</code> é o tempo de espera antes de começar. Clique em "Reiniciar" para vê-lo de novo.</li>
+  </ul>
+</section>
+
+<section class="cartao">
+  <h3>Extra: respeitando quem prefere menos movimento</h3>
+  <p>Algumas pessoas sentem tontura com animações e ativam "reduzir movimento" no sistema (no Windows: Configurações → Acessibilidade → Efeitos visuais → Efeitos de animação). O CSS detecta isso com uma media query:</p>
+  <pre class="codigo"><code>@media (prefers-reduced-motion: reduce) {
+  .notificacao,
+  .carregando {
+    animation-duration: 3s; /* fica bem mais calma */
+  }
+}</code></pre>
+  <p class="nota">Seu sistema, agora: <strong id="status-movimento"></strong>. Neste projeto, só os exemplos decorativos de "Para que servem" ficam mais calmos. As demonstrações da aula continuam funcionando normalmente, senão não daria para estudar.</p>
+</section>
+
+</main>
+
+<footer class="rodape">
+  Material de apoio baseado na Aula 14.1 — Mobile First e Animações (Profª Sabrina B. Moreira).<br>
+  Referências citadas na aula: Vieira (2020), Dinamize (2021), wpbeginner (2023), canarias (2021), Oliveira (2025).
+</footer>
+
+</body>
+</html>

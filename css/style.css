@@ -1,0 +1,241 @@
+/* =========================================================
+   style.css — estrutura geral da página, escrita em MOBILE FIRST
+
+   Como ler este arquivo:
+   1) Primeiro vêm os estilos BASE, sem media query.
+      Eles valem para o celular (e para todas as telas).
+   2) No final ficam as media queries com min-width,
+      que só ACRESCENTAM melhorias para telas maiores.
+   ========================================================= */
+
+:root {
+  --cor-principal: #3b3f8f;
+  --cor-fundo: #f4f5f9;
+  --cor-cartao: #fff;
+  --cor-texto: #222;
+  --cor-suave: #666;
+  --cor-codigo-fundo: #1e1e2e;
+  --cor-codigo-texto: #cde;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  background: var(--cor-fundo);
+  color: var(--cor-texto);
+}
+
+/* ---------- Topo ---------- */
+.topo {
+  background: var(--cor-principal);
+  color: #fff;
+  padding: 24px 16px;
+  text-align: center;
+}
+.topo h1 { margin: 0 0 4px; font-size: 1.5rem; }
+.topo p { margin: 0; opacity: .85; font-size: .9rem; }
+
+/* Selo que mostra qual layout está ativo.
+   O texto vem do "content" e muda nas media queries do final. */
+.selo-tela {
+  display: inline-flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #fff;
+  color: var(--cor-principal);
+  font-weight: 700;
+  font-size: .9rem;
+}
+.selo-tela__tipo::before { content: "📱 Layout CELULAR (base, sem media query)"; }
+#largura-tela { font-weight: 400; color: var(--cor-suave); }
+
+/* ---------- Menu ----------
+   Celular: uma linha só que rola para o lado (economiza altura). */
+.menu {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 16px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+.menu a { color: var(--cor-principal); text-decoration: none; }
+.menu a:hover { text-decoration: underline; }
+
+/* ---------- Conteúdo ---------- */
+.conteudo {
+  padding: 0 12px 16px;
+}
+
+.parte {
+  margin: 36px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 3px solid var(--cor-principal);
+  color: var(--cor-principal);
+  font-size: 1.3rem;
+}
+
+.cartao {
+  background: var(--cor-cartao);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 16px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+  /* evita que um elemento largo crie rolagem lateral na página toda */
+  overflow: hidden;
+}
+.cartao h3 { margin-top: 0; }
+
+.lista { padding-left: 20px; }
+.nota { font-size: 13px; color: var(--cor-suave); }
+
+code {
+  background: #eef0fa;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.codigo {
+  background: var(--cor-codigo-fundo);
+  color: var(--cor-codigo-texto);
+  padding: 12px 14px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 13px;
+  margin: 12px 0;
+}
+.codigo code { background: none; padding: 0; color: inherit; }
+
+/* Celular: tudo em uma coluna só */
+.duas-colunas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* ---------- Grade de exemplo (1 → 2 → 3 colunas) ---------- */
+.grade-exemplo {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 12px 0;
+}
+.mini-cartao {
+  background: var(--cor-principal);
+  color: #fff;
+  padding: 24px 12px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 700;
+}
+.mini-cartao:nth-child(2) { background: #c0392b; }
+.mini-cartao:nth-child(3) { background: #16a085; }
+
+/* ---------- Botões e controles ---------- */
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin: 10px 0;
+}
+.controles button,
+#an-reiniciar,
+#an-pausar {
+  border: 1px solid var(--cor-principal);
+  background: #fff;
+  color: var(--cor-principal);
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+}
+.controles button.ativo { background: var(--cor-principal); color: #fff; }
+.controles .botao-neutro { border-style: dashed; }
+
+/* ---------- Simulador de telas ---------- */
+.moldura-rolagem {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.moldura {
+  width: 376px; /* 360px de tela + 8px de borda de cada lado */
+  height: 460px;
+  min-width: 280px;
+  resize: horizontal;
+  overflow: hidden;
+  border: 8px solid #333;
+  border-radius: 14px;
+  background: #333;
+}
+.moldura iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff;
+  border-radius: 6px;
+}
+
+.rodape {
+  text-align: center;
+  padding: 24px 16px;
+  color: var(--cor-suave);
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   TABLET: a partir de 768px
+   (só ACRESCENTA ou ajusta o que já existe)
+   ========================================================= */
+@media (min-width: 768px) {
+  .selo-tela__tipo::before { content: "📲 Layout TABLET (min-width: 768px)"; }
+
+  .topo { padding: 32px 24px; }
+  .topo h1 { font-size: 2rem; }
+
+  /* agora há espaço: o menu quebra em linhas em vez de rolar */
+  .menu {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
+    gap: 6px 16px;
+  }
+
+  .conteudo { padding: 0 24px 24px; }
+  .cartao { padding: 20px 24px; }
+
+  .grade-exemplo { grid-template-columns: 1fr 1fr; }
+  .duas-colunas { grid-template-columns: 1fr 1fr; }
+}
+
+
+/* =========================================================
+   DESKTOP: a partir de 1024px
+   ========================================================= */
+@media (min-width: 1024px) {
+  .selo-tela__tipo::before { content: "🖥️ Layout DESKTOP (min-width: 1024px)"; }
+
+  body { font-size: 16px; }
+
+  /* em telas largas, limita a largura para o texto não ficar enorme */
+  .conteudo {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .grade-exemplo { grid-template-columns: 1fr 1fr 1fr; }
+}

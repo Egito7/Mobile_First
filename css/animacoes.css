@@ -1,0 +1,354 @@
+/* =========================================================
+   animacoes.css — todos os exemplos da parte de animações
+   (transition, transform, timing-function, @keyframes, animation)
+   ========================================================= */
+
+/* ---------- Caixa padrão usada nos exemplos (.box da aula) ---------- */
+.caixa {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #3b3f8f;
+  color: #fff;
+  font-weight: 700;
+  font-family: Consolas, monospace;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   Para que servem (exemplos de uso)
+   ========================================================= */
+.usos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.uso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #e3e5f0;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .usos { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1024px) {
+  .usos { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Feedback visual: o botão "afunda" ao ser clicado */
+.botao-feedback {
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 6px;
+  background: #16a085;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform .1s ease, background .2s ease;
+}
+.botao-feedback:hover { background: #12876f; }
+.botao-feedback:active { transform: scale(.92); }
+
+/* Guiar a atenção: um selo que "balança" de tempos em tempos */
+.notificacao {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #c0392b;
+  color: #fff;
+  font-weight: 700;
+  animation: chamar-atencao 2s ease-in-out infinite;
+}
+@keyframes chamar-atencao {
+  0%, 70%, 100% { transform: rotate(0); }
+  75% { transform: rotate(-8deg); }
+  80% { transform: rotate(8deg); }
+  85% { transform: rotate(-6deg); }
+  90% { transform: rotate(6deg); }
+}
+
+/* Interface moderna: cartão que sobe ao passar o mouse */
+.cartao-flutuante {
+  padding: 18px 24px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .15);
+  transition: transform .3s ease, box-shadow .3s ease;
+  cursor: default;
+}
+.cartao-flutuante:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, .2);
+}
+
+/* Microinteração: indicador de carregamento */
+.carregando {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #e3e5f0;
+  border-top-color: #3b3f8f;
+  border-radius: 50%;
+  animation: girar 1s linear infinite;
+}
+
+
+/* =========================================================
+   GPU: left (CPU) × transform (GPU)
+   ========================================================= */
+.pista-gpu {
+  position: relative;
+  height: 44px;
+  margin: 8px 0;
+  max-width: 300px;
+  background: #f0f1f7;
+  border-radius: 22px;
+}
+.rotulo-pista {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  font-size: 12px;
+  color: #999;
+}
+.bolinha {
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+/* anima "left": o navegador recalcula o layout a cada quadro (CPU) */
+.bolinha--left {
+  background: #c0392b;
+  animation: mover-left 1.5s ease-in-out infinite alternate;
+}
+/* anima "transform": vai direto para a composição (GPU) */
+.bolinha--transform {
+  background: #16a085;
+  animation: mover-transform 1.5s ease-in-out infinite alternate;
+}
+@keyframes mover-left {
+  from { left: 0; }
+  to   { left: 140px; }
+}
+@keyframes mover-transform {
+  from { transform: translateX(0); }
+  to   { transform: translateX(140px); }
+}
+
+
+/* =========================================================
+   transition
+   ========================================================= */
+.botao-transicao {
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 6px;
+  background: blue;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.botao-transicao:hover { background: red; }
+.botao-transicao--sem { transition: none; }
+
+
+/* =========================================================
+   transform
+   ========================================================= */
+.grupos-preset {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.palco {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 240px;
+  padding-left: 20px;
+  margin: 12px 0;
+  background:
+    linear-gradient(#e3e5f0 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(90deg, #e3e5f0 1px, transparent 1px) 0 0 / 20px 20px,
+    #fafbff;
+  border-radius: 8px;
+  /* dá profundidade às rotações 3D (rotateX / rotateY) */
+  perspective: 600px;
+}
+.palco--baixo { height: 200px; }
+
+.caixa-fantasma {
+  position: absolute;
+  left: 20px;
+  top: calc(50% - 40px);
+  width: 80px;
+  height: 80px;
+  border: 2px dashed #aaa;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 11px;
+  color: #999;
+}
+
+#caixa-transform {
+  position: relative; /* fica por cima da caixa fantasma */
+  transition: transform 0.5s ease;
+  opacity: .9;
+}
+
+.vizinho {
+  padding: 6px 10px;
+  background: #ffe8b3;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.controles-deslizantes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px 20px;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+}
+.controles-deslizantes label {
+  display: grid;
+  grid-template-columns: 90px 1fr 60px;
+  align-items: center;
+  gap: 8px;
+}
+@media (min-width: 768px) {
+  .controles-deslizantes { grid-template-columns: 1fr 1fr; }
+}
+
+/* "A ordem importa" */
+.caixa--ordem-a { transform: translateX(100px) rotate(45deg); background: #c0392b; }
+.caixa--ordem-b { transform: rotate(45deg) translateX(100px); background: #16a085; }
+
+
+/* =========================================================
+   timing-function: corrida
+   ========================================================= */
+.corrida { display: grid; gap: 6px; }
+.raia {
+  position: relative;
+  height: 46px;
+  background: #f0f1f7;
+  border-radius: 6px;
+}
+.raia span {
+  position: absolute;
+  top: 2px;
+  left: 8px;
+  font-size: 12px;
+  font-family: Consolas, monospace;
+  color: #555;
+}
+.corredor {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3b3f8f;
+  transition-property: transform;
+  transition-duration: 2s;
+}
+/* a distância (--distancia) é calculada no script.js conforme a largura da raia */
+.corrida.correndo .corredor {
+  transform: translateX(var(--distancia, 200px));
+}
+
+
+/* =========================================================
+   @keyframes e animation
+   ========================================================= */
+.vitrine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  background: #fafbff;
+  border-radius: 8px;
+}
+.vitrine--larga {
+  justify-content: flex-start;
+  padding-left: 16px;
+  margin: 12px 0;
+}
+
+.caixa--pulse {
+  animation: pulse 1s ease infinite;
+}
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.caixa--etapas {
+  animation: etapas 4s ease-in-out infinite;
+}
+@keyframes etapas {
+  0%   { transform: translateX(0)     rotate(0);      background: #3b3f8f; }
+  25%  { transform: translateX(100px) rotate(90deg);  background: #c0392b; }
+  50%  { transform: translateX(200px) rotate(180deg); background: #16a085; }
+  75%  { transform: translateX(100px) rotate(270deg); background: #d35400; }
+  100% { transform: translateX(0)     rotate(360deg); background: #3b3f8f; }
+}
+
+/* keyframes extras para o laboratório de "animation" */
+@keyframes vai-e-volta {
+  from { transform: translateX(0); }
+  to   { transform: translateX(200px); }
+}
+@keyframes girar {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.controles-animacao {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+}
+.controles-animacao label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.controles-animacao select { padding: 4px; font-size: 14px; }
+@media (min-width: 768px) {
+  .controles-animacao { grid-template-columns: repeat(3, 1fr); }
+}
+
+
+/* =========================================================
+   Acessibilidade: quem pediu "menos movimento" no sistema
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .notificacao,
+  .carregando {
+    animation-duration: 3s;
+  }
+}

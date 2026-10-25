@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loja Exemplo</title>
+<link rel="stylesheet" href="css/exemplo-layout.css">
+<script src="js/exemplo-layout.js" defer></script>
+</head>
+<body>
+
+<p class="aviso-layout"></p>
+
+<header class="cabecalho">
+  <strong class="logo">🛒 Loja Exemplo</strong>
+  <!-- O botão ☰ só aparece no celular -->
+  <button class="botao-menu" id="botao-menu" aria-expanded="false" aria-controls="navegacao">☰</button>
+  <nav class="navegacao" id="navegacao">
+    <a href="#">Início</a>
+    <a href="#">Produtos</a>
+    <a href="#">Ofertas</a>
+    <a href="#">Contato</a>
+  </nav>
+</header>
+
+<section class="destaque">
+  <h1>Promoção de Primavera</h1>
+  <p>Até 50% de desconto em todos os produtos.</p>
+  <a href="#" class="botao">Ver ofertas</a>
+</section>
+
+<div class="area-principal">
+  <main class="produtos">
+    <article class="produto"><div class="foto">👟</div><h2>Tênis</h2><p>R$ 199,90</p></article>
+    <article class="produto"><div class="foto">🎒</div><h2>Mochila</h2><p>R$ 129,90</p></article>
+    <article class="produto"><div class="foto">⌚</div><h2>Relógio</h2><p>R$ 349,90</p></article>
+    <article class="produto"><div class="foto">🧢</div><h2>Boné</h2><p>R$ 59,90</p></article>
+    <article class="produto"><div class="foto">🕶️</div><h2>Óculos</h2><p>R$ 89,90</p></article>
+    <article class="produto"><div class="foto">👕</div><h2>Camiseta</h2><p>R$ 69,90</p></article>
+  </main>
+
+  <!-- A barra lateral é um "extra": só aparece quando há espaço (desktop) -->
+  <aside class="lateral">
+    <h2>Categorias</h2>
+    <ul>
+      <li>Calçados</li>
+      <li>Acessórios</li>
+      <li>Roupas</li>
+    </ul>
+  </aside>
+</div>
+
+<footer class="rodape">© Loja Exemplo — página de demonstração</footer>
+
+</body>
+</html>
